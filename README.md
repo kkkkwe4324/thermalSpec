@@ -18,4 +18,4 @@
 
 ## 当前代码状态
 
-`run_once.py` 支持手机草稿端的真实单次运行、遥测和自动出图，用来打通框架；`run_matrix.py` 支持参数矩阵、温度回落后自动开始和断点续跑。**当前 `phone_draft` 模式不包含 Orin 验证，不能当作动机实验 1 的投机解码结果。** Orin 连通后需加入完整投机解码适配器，再正式采集实验数据。运行方法见 [实验入口说明](ideas/thermSpec/experiments/README.md)。
+`run_once.py` 支持手机草稿端的真实单次运行、[统一事件日志](ideas/thermSpec/experiments/DATA_FORMAT.md)和自动出图；`run_matrix.py` 支持参数矩阵、温度回落后自动开始和断点续跑。[全局配置](ideas/thermSpec/experiments/configs/README.md)固定模型、数据集与生成规则。2026-11-13 已经通过 Wi‑Fi ADB 在手机未充电时完成短运行。**当前 `phone_draft` 模式不包含 Orin 验证，不能当作动机实验 1 的投机解码结果。** Orin 连通后需加入完整投机解码适配器，再正式采集实验数据。运行方法见 [实验入口说明](ideas/thermSpec/experiments/README.md)。

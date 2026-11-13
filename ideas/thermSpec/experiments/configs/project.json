@@ -1,0 +1,32 @@
+{
+  "config_version": 1,
+  "project_id": "thermalSpec-phone-draft-orin-target",
+  "models": {
+    "draft": {
+      "id": "Qwen2.5-0.5B-Instruct-GGUF-Q4_K_M",
+      "runtime": "llama.cpp-b12201-android-arm64",
+      "sha256": "74a4da8c9fdbcd15bd1f6d01d621410d31c6fc00986f5eb687824e7b93d7a9db"
+    },
+    "target": {
+      "id": "Qwen2.5-7B-Instruct",
+      "revision": "a09a35458c702b33eeacc393d103063234e8bc28",
+      "runtime": "Jetson-AGX-Orin-CUDA"
+    }
+  },
+  "dataset": {
+    "id": "specbench_4task_prompts",
+    "path_env": "THERMSPEC_DATASET_PATH",
+    "sha256": "5635a698fab3e19f34a7e4780a2dc5c12d57c4fde486b47081e3cdca28eec528",
+    "calibration_selection": {"split": "calibration", "families": ["translation", "math_reasoning", "summarization", "rag"], "per_family": 2, "order_by": "split_rank"}
+  },
+  "generation": {
+    "sampling": "greedy",
+    "temperature": 0,
+    "formal_max_new_tokens": 128,
+    "context_size": 2048,
+    "phone_threads": 4,
+    "stop_rule": "model_eos_or_max_new_tokens"
+  },
+  "metric": "decode_wall_ms / final_valid_output_tokens",
+  "phone": {"device": "Redmi Note 10 Pro chopin", "cpu_sensor": "mtktscpu", "battery_sensor": "battery", "cpu_policies": [0, 4, 7]}
+}

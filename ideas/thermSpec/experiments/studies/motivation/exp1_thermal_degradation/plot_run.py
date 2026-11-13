@@ -10,9 +10,18 @@ import matplotlib.pyplot as plt
 
 def plot_run(directory):
     directory = Path(directory)
-    with (directory / "phone_telemetry.csv").open(encoding="utf-8") as stream:
-        telemetry = list(csv.DictReader(stream))
-    rounds = [json.loads(line) for line in (directory / "rounds.jsonl").read_text(encoding="utf-8").splitlines()]
+    if (directory / "events.jsonl").exists():
+        events = [json.loads(line) for line in (directory / "events.jsonl").read_text(encoding="utf-8").splitlines()]
+        telemetry = [{"elapsed_s": event["elapsed_ns"] / 1e9, **event["data"]}
+                     for event in events if event["kind"] == "phone_telemetry"]
+        rounds = [{"elapsed_s": event["elapsed_ns"] / 1e9,
+                   "elapsed_ms": event["data"]["request_wall_ms"],
+                   "valid_tokens": event["data"]["generated_tokens"]}
+                  for event in events if event["kind"] == "draft_request"]
+    else:
+        with (directory / "phone_telemetry.csv").open(encoding="utf-8") as stream:
+            telemetry = list(csv.DictReader(stream))
+        rounds = [json.loads(line) for line in (directory / "rounds.jsonl").read_text(encoding="utf-8").splitlines()]
     t = [float(r["elapsed_s"]) for r in telemetry]
     fig, axes = plt.subplots(3, 1, figsize=(9, 8), sharex=True, constrained_layout=True)
     axes[0].plot(t, [float(r["cpu_temp_c"]) for r in telemetry], label="CPU")

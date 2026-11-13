@@ -2,6 +2,10 @@
   "study_id": "exp1-demo",
   "mode": "phone_draft",
   "adb_path": "adb",
+  "adb_serial": null,
+  "adb_forward_port": 18082,
+  "require_unplugged": true,
+  "project_config": "ideas/thermSpec/experiments/configs/project.json",
   "health_url": "http://127.0.0.1:18082/health",
   "completion_url": "http://127.0.0.1:18082/completion",
   "prompt": "Explain why a phone may throttle under continuous inference in one sentence.",
@@ -13,6 +17,7 @@
   "stop_battery_temp_c": 38,
   "output_root": "ideas/thermSpec/experiments/runs/motivation/exp1",
   "postprocess": "ideas.thermSpec.experiments.studies.motivation.exp1_thermal_degradation.plot_comparison:postprocess",
+  "postprocess_run": "ideas.thermSpec.experiments.studies.motivation.exp1_thermal_degradation.plot_run:plot_run",
   "repeats": 1,
   "frequency_profiles": [
     {"name": "no_cap_demo", "caps_khz": null}
@@ -21,6 +26,7 @@
     "cpu_temp_max_c": 40,
     "battery_temp_max_c": 32,
     "thermal_cap_must_be_clear": true,
+    "require_unplugged": true,
     "stable_hold_s": 2,
     "max_wait_s": 30,
     "poll_s": 1

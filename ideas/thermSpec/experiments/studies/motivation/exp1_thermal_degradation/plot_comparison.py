@@ -16,12 +16,12 @@ def plot_comparison(summary_csv):
     ax.set_xticks(range(len(rows)), [r["run_id"] for r in rows], rotation=35, ha="right")
     ax.set_ylabel("Request ms/token")
     ax.set_title("Phone draft integration runs (no Orin verification)")
-    output = summary_csv.parent / "comparison.png"
+    output = summary_csv.parent / f"{summary_csv.stem}-comparison.png"
     fig.savefig(output, dpi=160)
     plt.close(fig)
     return output
 
 
-def postprocess(root):
+def postprocess(root, study_id):
     from .summarize import summarize
-    return plot_comparison(summarize(root))
+    return plot_comparison(summarize(root, study_id))

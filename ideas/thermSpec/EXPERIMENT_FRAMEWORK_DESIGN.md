@@ -18,17 +18,18 @@ thermalSpec/
    ├─ MOTIVATION_EXPERIMENTS_DRAFT_2026-11-13.md  动机实验要求
    └─ experiments/                             我们自己的实验代码
       ├─ README.md                              从哪儿运行、数据存在哪儿
+      ├─ DATA_FORMAT.md                         全部实验共用的事件格式
+      ├─ configs/
+      │  ├─ project.json                        固定模型、数据集、生成规则、指标
+      │  └─ README.md                           配置版本和改动规则
       ├─ run_once.py                            输入一个配置，只跑一次并生成本次图
       ├─ run_matrix.py                          输入参数矩阵，冷却等待、排队和续跑
       │
       ├─ core/                                  所有阶段共用的机制，不写实验结论
-      │  ├─ phone.py                            手机服务连接、频率上限请求与读回
-      │  ├─ orin.py                             Orin 目标端连接和投机解码调用
-      │  ├─ channel.py                          信道设置、健康检查和实测 RTT
-      │  ├─ telemetry.py                        手机温度、频率、温控采样
+      │  ├─ config.py                           全局配置与数据集哈希检查
+      │  ├─ phone.py                            手机连接、频率上限请求与遥测
       │  ├─ state_gate.py                       等待 S0；以后扩展 S1/S2 预热
-      │  ├─ guards.py                           停止条件、断连与清理
-      │  └─ storage.py                          run_id、原始日志、任务状态
+      │  └─ storage.py                          统一事件日志与任务状态
       │
       ├─ studies/                               每个研究阶段自己定义要跑什么、怎么画
       │  ├─ motivation/
@@ -49,8 +50,8 @@ thermalSpec/
             ├─ config.resolved.json            本次真实参数、版本和哈希
             ├─ status.json                     成功、失败、停止原因
             ├─ rounds.jsonl                    每轮推理与有效 token
-            ├─ phone_telemetry.csv             温度、三簇频率、热限制
-            ├─ transport.jsonl                 RTT、超时、断连
+            ├─ events.jsonl                    运行中持续写盘的唯一原始事件源
+            ├─ phone_telemetry.csv             成功运行后导出的兼容表
             ├─ summary.json                    本次 TPOT、首次限频时间
             └─ plots/exp1_run.png              本次运行自动生成的图
 ```
@@ -133,7 +134,7 @@ studies/motivation/exp1_thermal_degradation/plots/
   exp1_comparison.png        # 汇总多个 run_id 后生成的正式对照图
 ```
 
-记录原始时钟、设备来源和 `run_id`；跨设备时间轴先校准或用统一控制端事件对齐，不直接相减未同步的绝对时间戳。TPOT 使用最终有效输出 token；无有效输出的时间窗记为停顿/缺失，不画成 0。绘图脚本按 `run_id` 或实验配置筛选数据，不手工修改图中数值。为保证以后重画旧图，保存绘图参数、脚本版本与生成所用的 run_id 清单。
+记录原始时钟、设备来源和 `run_id`；跨设备时间轴先校准或用统一控制端事件对齐，不直接相减未同步的绝对时间戳。统一字段见 [DATA_FORMAT](experiments/DATA_FORMAT.md)。正式投机解码的 TPOT 使用最终有效输出 token；无有效输出的时间窗记为停顿/缺失，不画成 0。绘图脚本按 `run_id` 或实验配置筛选数据，不手工修改图中数值。为保证以后重画旧图，保存绘图参数、脚本版本与生成所用的 run_id 清单。
 
 ## 第一阶段的最小交付
 
