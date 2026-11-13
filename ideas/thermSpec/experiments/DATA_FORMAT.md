@@ -15,11 +15,11 @@
 | `run_start` / `run_end` | 控制器 | 模式、设备、配置哈希、结束原因 | 目标端会话信息、工作量完成情况 |
 | `phone_telemetry` | 手机采样器 | CPU/电池温度、三簇当前频率及 policy 上限、热限制标志、PPM 上限读回、充电状态、USB 在线值 | 必要时增加其他经核实的传感器；保留原始单位与节点版本 |
 | `frequency_request` / `frequency_clear` | 控制器 | 三簇请求的上限及清理事件 | 选择策略与决策依据 |
-| `draft_request` | 手机草稿服务 | 提示词 ID、请求 token 数、实际生成数、请求起止和耗时、手机服务计算/prefill 时间、token IDs | 在完整投机链路中标出轮次、上下文位置和通信路径 |
+| `draft_request` | 手机草稿服务 | 提示词 ID、请求 token 数、实际生成数、请求起止和耗时、手机服务计算/prefill 时间、token IDs、采样设置读回 | 在完整投机链路中标出轮次、上下文位置和通信路径 |
 | `guard_stop` / `telemetry_error` / `run_error` | 控制器 | 停止或失败原因及最近读数 | 关联目标端异常 |
 | `spec_round`（待接入） | Orin 协调器 | — | prompt ID、轮次、K、提出/接受/最终提交 token 数、draft RTT、目标验证时间、有效 token IDs、上下文长度 |
 | `channel_sample`（待接入） | 信道采样器 | — | 实测 RTT、带宽、抖动、超时、注入参数 |
 
-`config.resolved.json` 保留本次实验参数、自动识别的 ADB 序列号和传输方式、完整 `configs/project.json` 副本及其 SHA-256、提示词哈希。全局配置规定模型/数据集/生成规则；具体实验配置只指定变化量。正式加载 Spec-Bench 数据时先验证文件 SHA-256，避免改了数据还沿用旧图。
+`config.resolved.json` 保留本次实验参数、自动识别的 ADB 序列号和传输方式、完整 `configs/project.json` 副本及其 SHA-256、提示词哈希。全局配置规定模型/数据集/生成规则；具体实验配置只指定变化量。正式加载冻结的 WildChat 提示词时先验证文件 SHA-256，避免改了数据还沿用旧图。正式投机轮还须记录采样算法、temperature、top-p、随机种子、接受/拒绝、修正 token 和概率载荷字节数；当前 Demo 不产生这些字段。
 
 目前只验证 `phone_draft` 事件，尚无 Orin `spec_round`、端到端有效 token 统计或信道采样。现在生成的 `amortized_ms_per_token` 是**手机草稿请求耗时/token**，不是正式投机解码 TPOT；分析脚本必须按模式筛选，不能混合比较。

@@ -12,13 +12,13 @@ def load_project(path=None):
     path = Path(path) if path else DEFAULT_PROJECT
     raw = path.read_bytes()
     project = json.loads(raw)
-    if project.get("config_version") != 1:
+    if project.get("config_version") != 2:
         raise ValueError("Unsupported project config version")
     return project, hashlib.sha256(raw).hexdigest()
 
 
-def load_calibration_prompts(project):
-    """Verify the frozen dataset and select the same prompts on every machine."""
+def load_frozen_prompts(project, split):
+    """Verify the frozen file and return a stable split in selection order."""
     spec = project["dataset"]
     location = os.environ.get(spec["path_env"])
     if not location:
@@ -28,12 +28,14 @@ def load_calibration_prompts(project):
     if actual.lower() != spec["sha256"].lower():
         raise ValueError(f"Dataset SHA-256 mismatch: {actual}")
     rows = [json.loads(line) for line in raw.decode("utf-8").splitlines() if line]
-    selection = spec["calibration_selection"]
-    chosen = []
-    for family in selection["families"]:
-        matches = sorted((row for row in rows if row["split"] == selection["split"] and
-                          row["task_family"] == family), key=lambda row: row[selection["order_by"]])
-        if len(matches) < selection["per_family"]:
-            raise ValueError(f"Too few calibration prompts for {family}")
-        chosen.extend(matches[:selection["per_family"]])
+    chosen = sorted((row for row in rows if row["split"] == split),
+                    key=lambda row: row["selection_rank"])
+    if len(chosen) != spec["split_counts"][split]:
+        raise ValueError(f"Expected {spec['split_counts'][split]} {split} prompts, found {len(chosen)}")
+    if len({row["prompt_id"] for row in chosen}) != len(chosen):
+        raise ValueError("Duplicate prompt IDs in frozen split")
     return chosen
+
+
+def load_calibration_prompts(project):
+    return load_frozen_prompts(project, "calibration")

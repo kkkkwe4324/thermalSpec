@@ -15,6 +15,16 @@ from .core.phone import clear_caps, connected_serial, forward_port, health, samp
 from .core.storage import EventWriter, write_json
 
 
+def draft_request_payload(config, project):
+    return {"prompt": config["prompt"], "n_predict": config["tokens_per_request"],
+            "temperature": project["generation"]["temperature"],
+            "top_p": project["generation"]["top_p"],
+            "top_k": project["generation"]["top_k"],
+            "min_p": project["generation"]["min_p"],
+            "repeat_penalty": project["generation"]["repeat_penalty"],
+            "stream": False, "return_tokens": True}
+
+
 def run(config, run_id):
     if config.get("mode") != "phone_draft":
         raise ValueError("Only phone_draft integration mode is implemented; Orin verification is pending")
@@ -91,10 +101,7 @@ def run(config, run_id):
         request_ms_total = 0.0
         while (not stop.is_set() and count < config["max_requests"] and
                (time.monotonic_ns() - start_ns) / 1e9 < config["run_duration_s"]):
-            payload = json.dumps({"prompt": config["prompt"],
-                                  "n_predict": config["tokens_per_request"],
-                                  "temperature": project["generation"]["temperature"],
-                                  "stream": False, "return_tokens": True}).encode("utf-8")
+            payload = json.dumps(draft_request_payload(config, project)).encode("utf-8")
             request = urllib.request.Request(config["completion_url"], payload,
                                              {"Content-Type": "application/json"})
             request_start_ns = time.monotonic_ns()
@@ -111,6 +118,9 @@ def run(config, run_id):
                 "request_wall_ms": elapsed_ms,
                 "phone_reported_draft_ms": result.get("timings", {}).get("predicted_ms"),
                 "phone_reported_prefill_ms": result.get("timings", {}).get("prompt_ms"),
+                "sampling_readback": {key: (result.get("generation_settings") or {}).get(key)
+                                      for key in ("temperature", "top_p", "top_k", "min_p",
+                                                  "repeat_penalty")},
                 "output_sha256": hashlib.sha256(result.get("content", "").encode("utf-8")).hexdigest(),
                 "token_ids": result.get("tokens", [])
             }, sample_ns=request_end_ns)
@@ -129,7 +139,8 @@ def run(config, run_id):
             writer.writeheader()
             writer.writerows(readings)
         reason = guard_reasons[-1] if guard_reasons else "duration_or_request_limit"
-        summary = {"mode": "phone_draft", "requests": count, "valid_tokens": tokens,
+        summary = {"mode": "phone_draft", "sampling_status": "draft_only_no_target_verification",
+                   "requests": count, "valid_tokens": tokens,
                    "total_request_ms": request_ms_total,
                    "amortized_ms_per_token": request_ms_total / tokens if tokens else None,
                    "max_cpu_temp_c": max(r["cpu_temp_c"] for r in readings),

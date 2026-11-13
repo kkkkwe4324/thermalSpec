@@ -1,5 +1,5 @@
 {
-  "config_version": 1,
+  "config_version": 2,
   "project_id": "thermalSpec-phone-draft-orin-target",
   "models": {
     "draft": {
@@ -9,19 +9,33 @@
     },
     "target": {
       "id": "Qwen2.5-7B-Instruct",
+      "hf_repo": "Qwen/Qwen2.5-7B-Instruct",
       "revision": "a09a35458c702b33eeacc393d103063234e8bc28",
       "runtime": "Jetson-AGX-Orin-CUDA"
     }
   },
   "dataset": {
-    "id": "specbench_4task_prompts",
+    "id": "wildchat_1m_first_turn_v1",
     "path_env": "THERMSPEC_DATASET_PATH",
-    "sha256": "5635a698fab3e19f34a7e4780a2dc5c12d57c4fde486b47081e3cdca28eec528",
-    "calibration_selection": {"split": "calibration", "families": ["translation", "math_reasoning", "summarization", "rag"], "per_family": 2, "order_by": "split_rank"}
+    "sha256": "2d29756a712a8bace14a26afae6a67bbad146ec7212a7bd3924981f13b6d52fa",
+    "source_repo": "allenai/WildChat-1M",
+    "source_revision": "7d6490e462285cf85d91eabea0f9a954fbddcd1f",
+    "source_row_count": 837989,
+    "source_shards": 14,
+    "selection_seed": 20261113,
+    "selection_pages": 40,
+    "selection_page_size": 10,
+    "split_counts": {"calibration": 64, "test": 192}
   },
   "generation": {
-    "sampling": "greedy",
-    "temperature": 0,
+    "sampling": "exact_speculative",
+    "temperature": 1.0,
+    "top_p": 0.9,
+    "top_k": 0,
+    "min_p": 0.0,
+    "repeat_penalty": 1.0,
+    "sampling_vocab_tokens": 151665,
+    "mask_padded_logits": true,
     "formal_max_new_tokens": 128,
     "context_size": 2048,
     "phone_threads": 4,

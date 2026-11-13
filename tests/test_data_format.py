@@ -30,18 +30,18 @@ class DataFormatTests(unittest.TestCase):
     def test_calibration_selection_verifies_hash_and_order(self):
         with tempfile.TemporaryDirectory() as folder:
             path = Path(folder) / "prompts.jsonl"
-            rows = [{"split": "calibration", "task_family": family, "split_rank": rank,
-                     "prompt_id": f"{family}-{rank}"}
-                    for family in ("translation", "math_reasoning", "summarization", "rag")
+            rows = [{"split": "calibration", "selection_rank": rank,
+                     "prompt_id": f"wildchat-{rank}", "prompt": f"Real request {rank}"}
                     for rank in (3, 1, 2)]
             raw = ("\n".join(json.dumps(row) for row in rows) + "\n").encode("utf-8")
             path.write_bytes(raw)
             project, _ = load_project()
             project["dataset"]["sha256"] = hashlib.sha256(raw).hexdigest()
+            project["dataset"]["split_counts"] = {"calibration": 3, "test": 0}
             with patch.dict("os.environ", {project["dataset"]["path_env"]: str(path)}):
                 chosen = load_calibration_prompts(project)
-                self.assertEqual(len(chosen), 8)
-                self.assertEqual([row["split_rank"] for row in chosen], [1, 2] * 4)
+                self.assertEqual(len(chosen), 3)
+                self.assertEqual([row["selection_rank"] for row in chosen], [1, 2, 3])
                 project["dataset"]["sha256"] = "0" * 64
                 with self.assertRaises(ValueError):
                     load_calibration_prompts(project)
