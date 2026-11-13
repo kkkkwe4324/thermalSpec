@@ -9,13 +9,12 @@
 ```text
 thermalSpec/
 ├─ reproductions/                              论文复现，与我们自己的实验分开
-│  ├─ eardvfs_iccad2025/                       已有的 EarDVFS 复现资料
-│  ├─ pelm_sensys2026/                         日后复现 PELM 时再建
-│  └─ banditspec_icml2025/                     日后复现 BanditSpec 时再建
+│  └─ README.md                                当前仅有占位说明；论文代码以后逐篇移入
 │
 └─ ideas/thermSpec/
    ├─ SETUP.md                                  现有设备和模型部署记录
-   ├─ MOTIVATION_EXPERIMENTS_DRAFT_2026-11-13.md  动机实验要求
+   ├─ README.md                                idea、论文和研究问题
+   ├─ MOTIVATION_EXPERIMENTS.md                动机实验要求
    └─ experiments/                             我们自己的实验代码
       ├─ README.md                              从哪儿运行、数据存在哪儿
       ├─ DATA_FORMAT.md                         全部实验共用的事件格式
@@ -35,12 +34,11 @@ thermalSpec/
       │  ├─ motivation/
       │  │  ├─ exp1_thermal_degradation/
       │  │  │  ├─ configs/
-      │  │  │  │  ├─ profiles.yaml              设备、上限、信道和冷却门槛
-      │  │  │  │  └─ matrix.yaml                F高/F适中 × 重复次数等
+      │  │  │  │  └─ demo_phone.json            当前手机草稿 Demo；正式矩阵待标定
       │  │  │  ├─ summarize.py                  原始数据 → 实验1汇总
       │  │  │  ├─ plot_run.py                   每跑完一次自动出三行 Demo 图
       │  │  │  ├─ plot_comparison.py            两组上限和多次重复的正式图
-      │  │  │  └─ demo/                         小样例数据与预期图片
+      │  │  │  └─ __init__.py                  实验1模块
       │  │  ├─ exp2_channel_thermal_k/          后续独立配置、汇总、画图
       │  │  └─ exp3_joint_f_k/                  后续独立配置、汇总、画图
       │  └─ method/                             以后方法实验；不会改动旧图脚本
@@ -49,10 +47,9 @@ thermalSpec/
          └─ motivation/exp1/<run_id>/
             ├─ config.resolved.json            本次真实参数、版本和哈希
             ├─ status.json                     成功、失败、停止原因
-            ├─ rounds.jsonl                    每轮推理与有效 token
             ├─ events.jsonl                    运行中持续写盘的唯一原始事件源
             ├─ phone_telemetry.csv             成功运行后导出的兼容表
-            ├─ summary.json                    本次 TPOT、首次限频时间
+            ├─ summary.json                    本次手机草稿请求统计；正式 TPOT 待接入
             └─ plots/exp1_run.png              本次运行自动生成的图
 ```
 
@@ -124,10 +121,9 @@ PENDING → WAITING_FOR_STATE → PREFLIGHT → RUNNING → SAVED → PLOTTED
 runs/motivation/exp1/<run_id>/
   config.resolved.json       # 展开后的实际配置、版本、模型及提示词哈希
   status.json                # 任务状态、开始/结束时间、失败或停止原因
-  rounds.jsonl               # 每轮 K、接受数、有效输出数及各阶段耗时
-  phone_telemetry.csv        # 时间戳、CPU/电池温度、三簇频率、请求/读回/热上限
-  transport.jsonl            # 草稿请求 RTT、错误与超时
-  summary.json              # 本次端到端 TPOT、首次限频、全程/后半程统计
+  events.jsonl               # 运行中持续保存的手机遥测、请求与停止事件
+  phone_telemetry.csv        # 成功后从遥测导出的兼容表
+  summary.json              # 当前仅手机草稿请求统计；端到端 TPOT 待接入
   plots/exp1_run.png         # 本次运行结束自动生成的 Demo 图
 
 studies/motivation/exp1_thermal_degradation/plots/
