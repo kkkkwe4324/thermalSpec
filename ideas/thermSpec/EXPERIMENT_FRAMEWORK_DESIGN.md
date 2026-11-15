@@ -4,12 +4,15 @@
 
 ## 代码边界
 
-下面是目标文件夹层级。第二、三个动机实验和方法目录在开展对应工作时创建。
+下面是仓库已提交的文件夹层级。预留目录用 README 标明用途，因此 GitHub 上也能看到；未实施的实验仍标为待做。
 
 ```text
 thermalSpec/
 ├─ reproductions/                              论文复现，与我们自己的实验分开
-│  └─ README.md                                当前仅有占位说明；论文代码以后逐篇移入
+│  ├─ README.md                                三篇论文的复现索引
+│  ├─ eardvfs_iccad2025/                      每篇独立保存 src/、configs/、analysis/
+│  ├─ pelm_sensys2026/                        每个子目录有 README 占位说明
+│  └─ banditspec_icml2025/
 │
 └─ ideas/thermSpec/
    ├─ SETUP.md                                  现有设备和模型部署记录
@@ -18,6 +21,9 @@ thermalSpec/
    └─ experiments/                             我们自己的实验代码
       ├─ README.md                              从哪儿运行、数据存在哪儿
       ├─ DATA_FORMAT.md                         全部实验共用的事件格式
+      ├─ WORKLOAD_AND_SAMPLING.md              真实提示词与采样口径
+      ├─ prepare_wildchat.py                    从固定版本生成本地负载
+      ├─ probe_probability_payload.py          概率载荷本地探针
       ├─ configs/
       │  ├─ project.json                        固定模型、数据集、生成规则、指标
       │  └─ README.md                           配置版本和改动规则
@@ -26,21 +32,25 @@ thermalSpec/
       │
       ├─ core/                                  所有阶段共用的机制，不写实验结论
       │  ├─ config.py                           全局配置与数据集哈希检查
+      │  ├─ sampling.py                         分布保持投机采样的参考实现
       │  ├─ phone.py                            手机连接、频率上限请求与遥测
       │  ├─ state_gate.py                       等待 S0；以后扩展 S1/S2 预热
       │  └─ storage.py                          统一事件日志与任务状态
       │
       ├─ studies/                               每个研究阶段自己定义要跑什么、怎么画
       │  ├─ motivation/
+      │  │  ├─ README.md                      四项动机实验索引与当前状态
       │  │  ├─ exp1_thermal_degradation/
+      │  │  │  ├─ README.md                  实验1入口与 Demo 限制
       │  │  │  ├─ configs/
       │  │  │  │  └─ demo_phone.json            当前手机草稿 Demo；正式矩阵待标定
       │  │  │  ├─ summarize.py                  原始数据 → 实验1汇总
       │  │  │  ├─ plot_run.py                   每跑完一次自动出三行 Demo 图
       │  │  │  ├─ plot_comparison.py            两组上限和多次重复的正式图
       │  │  │  └─ __init__.py                  实验1模块
-      │  │  ├─ exp2_channel_thermal_k/          后续独立配置、汇总、画图
-      │  │  └─ exp3_joint_f_k/                  后续独立配置、汇总、画图
+      │  │  ├─ exp2_channel_thermal_k/          README 与 configs/ 已预留
+      │  │  ├─ exp3_joint_f_k/                  README 与 configs/ 已预留
+      │  │  └─ exp4_method_motivation/          README 与 configs/ 已预留，设计待定
       │  └─ method/                             以后方法实验；不会改动旧图脚本
       │
       └─ runs/                                  实际运行数据，按阶段与 run_id 隔离

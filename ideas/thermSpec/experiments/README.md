@@ -2,6 +2,8 @@
 
 从仓库根目录执行。先确认 Android Debug Bridge 和手机草稿服务已就绪；单次运行会为选中的设备建立端口转发。需要 `matplotlib`（`python -m pip install -r requirements.txt`）。固定模型、数据集及生成规则见 [全局配置](configs/README.md)，长期保留的数据字段见 [统一数据格式](DATA_FORMAT.md)。
 
+找实验代码：[动机实验 1–4 的目录索引](studies/motivation/README.md)；论文复现代码在仓库根目录的[复现索引](../../../reproductions/README.md)。
+
 ```powershell
 python -m ideas.thermSpec.experiments.run_once --config ideas/thermSpec/experiments/studies/motivation/exp1_thermal_degradation/configs/demo_phone.json --run-id my-first-run
 python -m ideas.thermSpec.experiments.run_matrix --config ideas/thermSpec/experiments/studies/motivation/exp1_thermal_degradation/configs/demo_phone.json

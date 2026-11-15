@@ -4,6 +4,8 @@
 
 研究分三步：先用[动机实验 1–3](ideas/thermSpec/MOTIVATION_EXPERIMENTS.md)确认热退化、状态对最优 K 的影响、频率上限与 K 的联合效应；再设计同时感知信道与热状态的控制方法；最后在相同端到端指标与负载下比较固定配置和动态方法。实验 4 暂留给方法动机。每次运行保留原始数据，旧图可以重新生成。完整研究方向见 [idea 说明](ideas/thermSpec/README.md)，[代码分层](ideas/thermSpec/EXPERIMENT_FRAMEWORK_DESIGN.md)将单次运行、矩阵调度、动机实验分析和论文复现分开。
 
+找代码请从[论文复现目录](reproductions/README.md)或[动机实验目录](ideas/thermSpec/experiments/studies/motivation/README.md)进入；两个索引都列出各子目录的当前状态和文件放置位置。
+
 ## 相关论文与边界
 
 | 论文 | 与本研究的关系 |
