@@ -6,6 +6,39 @@
 
 找代码请从[论文复现目录](reproductions/README.md)或[动机实验目录](ideas/thermSpec/experiments/studies/motivation/README.md)进入；两个索引都列出各子目录的当前状态和文件放置位置。
 
+## 仓库目录
+
+```text
+thermalSpec/
+├─ reproductions/                              论文复现，与本项目实验分开
+│  ├─ README.md                                三篇论文的复现索引
+│  ├─ eardvfs_iccad2025/                      EarDVFS；src/、configs/、analysis/
+│  ├─ pelm_sensys2026/                        PELM；src/、configs/、analysis/
+│  └─ banditspec_icml2025/                    BanditSpec；src/、configs/、analysis/
+└─ ideas/thermSpec/
+   ├─ README.md                               整体 idea 与相关工作
+   ├─ MOTIVATION_EXPERIMENTS.md               动机实验要求、标定变量与交付图片
+   ├─ EXPERIMENT_FRAMEWORK_DESIGN.md          完整代码分层与运行流程
+   └─ experiments/
+      ├─ README.md                            实验运行入口
+      ├─ DATA_FORMAT.md                       统一原始数据格式
+      ├─ WORKLOAD_AND_SAMPLING.md             真实提示词与采样口径
+      ├─ configs/project.json                 固定模型、数据集与生成参数
+      ├─ core/                                共用设备、采样、状态门槛和写盘代码
+      ├─ run_once.py                          单次运行
+      ├─ run_matrix.py                        批量调度、冷却等待与续跑
+      └─ studies/
+         ├─ motivation/
+         │  ├─ README.md                      动机实验索引
+         │  ├─ exp1_thermal_degradation/      已有手机 Demo、汇总与绘图代码
+         │  ├─ exp2_channel_thermal_k/        已预留 configs/，待实现
+         │  ├─ exp3_joint_f_k/                已预留 configs/，待实现
+         │  └─ exp4_method_motivation/        仅预留位置
+         └─ method/                           后续方法实验
+```
+
+每篇复现论文的 `src/` 放实现，`configs/` 放参数，`analysis/` 放汇总和绘图代码。动机实验各自保存配置与分析脚本，复用 `core/` 和运行入口。原始数据写入本地 `experiments/runs/`，该目录及本地提示词文件不提交到 GitHub。预留目录中的 README 说明当前状态；它们尚不代表已完成复现或正式实验。
+
 ## 相关论文与边界
 
 | 论文 | 与本研究的关系 |
