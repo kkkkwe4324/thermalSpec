@@ -1,6 +1,6 @@
 import unittest
 
-from ideas.thermSpec.experiments.run_once import draft_request_payload
+from framework.run_once import draft_request_payload
 
 
 class RunOnceSamplingTests(unittest.TestCase):

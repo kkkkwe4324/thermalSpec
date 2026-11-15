@@ -8,8 +8,8 @@ import unittest
 from pathlib import Path
 from unittest.mock import patch
 
-from ideas.thermSpec.experiments.core.config import load_calibration_prompts, load_project
-from ideas.thermSpec.experiments.core.sampling import (accept_probability,
+from framework.core.config import load_calibration_prompts, load_project
+from framework.core.sampling import (accept_probability,
     normalize_top_p, residual_distribution, verify_round)
 
 

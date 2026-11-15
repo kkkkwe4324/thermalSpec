@@ -1,6 +1,6 @@
 import unittest
 
-from ideas.thermSpec.experiments.prepare_wildchat import count_prompt_tokens, extract_prompt, locate_row
+from framework.tools.prepare_wildchat import count_prompt_tokens, extract_prompt, locate_row
 
 
 class PrepareWildchatTests(unittest.TestCase):

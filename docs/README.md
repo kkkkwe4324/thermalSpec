@@ -1,0 +1,9 @@
+# 项目文档
+
+- [IDEA.md](IDEA.md)：研究问题、相关论文及当前阶段。
+- [MOTIVATION_EXPERIMENTS.md](MOTIVATION_EXPERIMENTS.md)：实验要求、标定变量和交付图片。
+- [EXPERIMENT_FRAMEWORK_DESIGN.md](EXPERIMENT_FRAMEWORK_DESIGN.md)：代码职责和执行流程。
+- [SETUP.md](SETUP.md)：设备、模型与已有部署背景。
+- [DATA_FORMAT.md](DATA_FORMAT.md)：原始事件和配置快照格式。
+- [WORKLOAD_AND_SAMPLING.md](WORKLOAD_AND_SAMPLING.md)：真实请求数据集与采样口径。
+- [FREQUENCY_CONTROL_MATRIX_2026-11-08.md](FREQUENCY_CONTROL_MATRIX_2026-11-08.md)：历史频率接口检查。

@@ -1,6 +1,8 @@
 __pycache__/
 .pytest_cache/
 .venv/
-ideas/thermSpec/experiments/runs/
-ideas/thermSpec/experiments/data/
+/runs/*
+!/runs/README.md
+/data/*
+!/data/README.md
 *.pdf

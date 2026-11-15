@@ -6,9 +6,9 @@ import unittest
 from pathlib import Path
 from unittest.mock import patch
 
-from ideas.thermSpec.experiments.core.config import load_calibration_prompts, load_project
-from ideas.thermSpec.experiments.core.storage import EventWriter
-from ideas.thermSpec.experiments.studies.motivation.exp1_thermal_degradation.summarize import summarize
+from framework.core.config import load_calibration_prompts, load_project
+from framework.core.storage import EventWriter
+from experiments.motivation.exp1_thermal_degradation.summarize import summarize
 
 
 class DataFormatTests(unittest.TestCase):

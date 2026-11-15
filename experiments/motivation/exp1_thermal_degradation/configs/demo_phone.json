@@ -1,0 +1,34 @@
+{
+  "study_id": "exp1-demo",
+  "mode": "phone_draft",
+  "adb_path": "adb",
+  "adb_serial": null,
+  "adb_forward_port": 18082,
+  "require_unplugged": true,
+  "project_config": "configs/project.json",
+  "health_url": "http://127.0.0.1:18082/health",
+  "completion_url": "http://127.0.0.1:18082/completion",
+  "prompt": "Explain why a phone may throttle under continuous inference in one sentence.",
+  "tokens_per_request": 8,
+  "run_duration_s": 15,
+  "max_requests": 3,
+  "sample_interval_s": 0.5,
+  "stop_cpu_temp_c": 65,
+  "stop_battery_temp_c": 38,
+  "output_root": "runs/motivation/exp1",
+  "postprocess": "experiments.motivation.exp1_thermal_degradation.plot_comparison:postprocess",
+  "postprocess_run": "experiments.motivation.exp1_thermal_degradation.plot_run:plot_run",
+  "repeats": 1,
+  "frequency_profiles": [
+    {"name": "no_cap_demo", "caps_khz": null}
+  ],
+  "cool_gate": {
+    "cpu_temp_max_c": 40,
+    "battery_temp_max_c": 32,
+    "thermal_cap_must_be_clear": true,
+    "require_unplugged": true,
+    "stable_hold_s": 2,
+    "max_wait_s": 30,
+    "poll_s": 1
+  }
+}
